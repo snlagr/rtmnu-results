@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-import urllib, os
+import urllib, os, time
 from PIL import Image
 
 # make folder to save pics
@@ -16,7 +16,7 @@ faculty.select_by_value("1")
 exams = Select(browser.find_element_by_id('ddlselectexam'))
 exams.select_by_value("391")
 
-for rollno in range(316950, 317991):
+for rollno in range(316926, 316995):
 	# enter roll no
 	roll_field = browser.find_element_by_id("txtrollno")
 	roll_field.clear()
@@ -25,7 +25,15 @@ for rollno in range(316950, 317991):
 	# submit info / load marksheet page
 	sub_button = browser.find_element_by_id("imgbtnviewmarksheet")
 	sub_button.click()
-
+	
 	# save screenshot
 	browser.save_screenshot("marksheets/" + str(rollno) + ".png")
-	browser.back()
+	
+	# handle invalid roll no
+	try:
+		browser.back()
+	except:
+		try:
+			browser.back()
+		except:
+			time.sleep(3)
